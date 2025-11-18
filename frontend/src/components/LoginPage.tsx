@@ -11,7 +11,6 @@ export const LoginPage = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate(); // Hook de navegação
 
-  // Se já estiver logado, vai pro Admin direto
   useEffect(() => {
     if (isAuthenticated) navigate('/admin');
   }, [isAuthenticated, navigate]);
@@ -28,7 +27,7 @@ export const LoginPage = () => {
       if (!response.ok) throw new Error(data || 'Erro desconhecido');
       
       login(data.token);
-      navigate('/admin'); // <--- REDIRECIONA PARA O ADMIN
+      navigate('/admin'); 
     } catch (err: any) { setError(err.message || 'Falha ao conectar.'); }
   };
 

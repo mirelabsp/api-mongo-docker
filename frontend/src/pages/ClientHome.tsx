@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Navbar, Button, Badge, Modal, Form, ListGroup, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../utils/formatPrice';
-import { useCart } from '../context/CartContext'; // <-- IMPORTAR CARRINHO
-import { ShoppingCartModal } from '../components/ShoppingCartModal'; // <-- IMPORTAR MODAL CARRINHO
-
+import { useCart } from '../context/CartContext'; 
+import { ShoppingCartModal } from '../components/ShoppingCartModal'; 
 const API_BASE_URL = 'http://localhost:3000/api/products';
 const STATIC_URL = 'http://localhost:3000/';
 
@@ -14,14 +13,12 @@ export const ClientHome = () => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   
   const [showDetails, setShowDetails] = useState(false);
-  const [showCart, setShowCart] = useState(false); // <-- NOVO ESTADO DO CARRINHO
+  const [showCart, setShowCart] = useState(false); 
 
-  const { addItem, cartCount } = useCart(); // <-- USAR HOOK DO CARRINHO
+  const { addItem, cartCount } = useCart(); 
 
-  // Estado para novo comentário (Público)
   const [newReview, setNewReview] = useState({ author: '', rating: '5', description: '' });
 
-  // --- Buscar Produtos ---
   useEffect(() => {
     fetch(`${API_BASE_URL}/allProducts`)
       .then(res => res.json())
@@ -30,7 +27,6 @@ export const ClientHome = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // --- Abrir Detalhes ---
   const openDetails = async (product: any) => {
     try {
       const res = await fetch(`${API_BASE_URL}/getProductReviews/${product._id}`);
@@ -40,7 +36,6 @@ export const ClientHome = () => {
     } catch (error) { console.error(error); }
   };
 
-  // --- Adicionar Comentário (Público) ---
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if(!selectedProduct) return;
@@ -56,7 +51,6 @@ export const ClientHome = () => {
     } catch { alert("Erro ao comentar."); }
   };
   
-  // --- Adicionar ao Carrinho ---
   const handleAddToCart = (product: any) => {
     addItem({ 
         _id: product._id,
@@ -70,7 +64,7 @@ export const ClientHome = () => {
 
   return (
     <>
-      {/* Navbar do Cliente */}
+     
       <Navbar bg="white" expand="lg" className="shadow-sm sticky-top border-bottom py-3">
         <Container>
           <Navbar.Brand className="fw-bold fs-4">🛍️ Minha Loja Inc.</Navbar.Brand>
@@ -82,15 +76,13 @@ export const ClientHome = () => {
                     {cartCount}
                 </Badge>
             </Button>
-             {/* O BOTÃO PARA ACESSO ADMIN */}
             <Link to="/login">
-              <Button variant="outline-dark" size="sm">🔒 Acesso Admin</Button>
+              <Button variant="outline-dark" size="sm">Acesso Admin</Button>
             </Link>
           </div>
         </Container>
       </Navbar>
 
-      {/* Hero Section (Banner) */}
       <div className="bg-light py-5 mb-5 text-center border-bottom">
         <Container>
           <h1 className="display-4 fw-bold">Bem-vindo à nossa loja</h1>
@@ -123,7 +115,7 @@ export const ClientHome = () => {
                 </Card.Body>
                 <Card.Footer className="bg-white border-0 d-flex gap-2">
                     <Button variant="outline-primary" className="flex-grow-1" size="sm" onClick={() => openDetails(p)}>Ver Detalhes</Button>
-                    <Button variant="success" size="sm" onClick={() => handleAddToCart(p)}>Adicionar ➕</Button>
+                    <Button variant="success" size="sm" onClick={() => handleAddToCart(p)}>Adicionar</Button>
                 </Card.Footer>
               </Card>
             </Col>
@@ -131,7 +123,6 @@ export const ClientHome = () => {
         </Row>
       </Container>
 
-      {/* Modal de Detalhes (Cliente) */}
       <Modal show={showDetails} onHide={() => setShowDetails(false)} size="lg" centered>
         <Modal.Header closeButton><Modal.Title>{selectedProduct?.title}</Modal.Title></Modal.Header>
         <Modal.Body>
@@ -153,7 +144,6 @@ export const ClientHome = () => {
                         {(!selectedProduct?.reviews || selectedProduct.reviews.length === 0) && <p className="text-muted small">Seja o primeiro a avaliar!</p>}
                     </ListGroup>
                     
-                    {/* Formulário de Comentário Público */}
                     <Form onSubmit={handleAddReview} className="bg-light p-3 rounded">
                         <h6 className="mb-3">Deixe sua avaliação</h6>
                         <Row className="g-2">
@@ -168,7 +158,6 @@ export const ClientHome = () => {
         </Modal.Body>
       </Modal>
 
-      {/* NOVO MODAL DO CARRINHO */}
       <ShoppingCartModal show={showCart} onHide={() => setShowCart(false)} />
     </>
   );

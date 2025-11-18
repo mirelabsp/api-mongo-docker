@@ -9,7 +9,7 @@ import { CartProvider } from './context/CartContext'; // <-- IMPORTAR
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
-      <CartProvider> {/* <-- ENVOLVER COM CART PROVIDER */}
+      <CartProvider> 
         <App />
       </CartProvider>
     </AuthProvider>

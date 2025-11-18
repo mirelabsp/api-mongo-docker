@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import Order from '../models/orderModel';
 import jwt from 'jsonwebtoken';
 
-// Assumindo que o token JWT tem o email do usuário
 const getEmailFromToken = (token: string): string => {
     try {
         const decoded: any = jwt.decode(token);

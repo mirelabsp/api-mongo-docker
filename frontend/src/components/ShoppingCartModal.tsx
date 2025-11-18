@@ -2,7 +2,7 @@ import { Modal, Button, ListGroup, Row, Col, Form, Badge, Alert, Spinner } from 
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../utils/formatPrice';
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext'; // <-- IMPORTAR AUTH
+import { useAuth } from '../context/AuthContext'; 
 
 interface CartModalProps {
   show: boolean;
@@ -11,8 +11,7 @@ interface CartModalProps {
 
 export const ShoppingCartModal: React.FC<CartModalProps> = ({ show, onHide }) => {
   const { cartItems, removeItem, updateQuantity, cartTotal, clearCart } = useCart();
-  const { isAuthenticated, token } = useAuth(); // <-- USAR HOOK DE AUTH
-
+  const { isAuthenticated, token } = useAuth(); 
   const [checkoutStep, setCheckoutStep] = useState(1);
   const [shippingAddress, setShippingAddress] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,9 +30,9 @@ export const ShoppingCartModal: React.FC<CartModalProps> = ({ show, onHide }) =>
     setLoading(true);
     setOrderError('');
 
-    // 1. Mapear itens do carrinho para o formato do backend
+
     const itemsForApi = cartItems.map(item => ({
-        productId: item._id, // O _id do produto
+        productId: item._id, 
         title: item.title,
         price: item.price,
         quantity: item.quantity,
@@ -44,7 +43,7 @@ export const ShoppingCartModal: React.FC<CartModalProps> = ({ show, onHide }) =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Envia o token
+                'Authorization': `Bearer ${token}` 
             },
             body: JSON.stringify({
                 items: itemsForApi,
@@ -65,7 +64,7 @@ export const ShoppingCartModal: React.FC<CartModalProps> = ({ show, onHide }) =>
     } catch (error: any) {
         setOrderError(error.message || 'Erro de conexão.');
         setLoading(false);
-        setCheckoutStep(1); // Volta para o carrinho em caso de erro
+        setCheckoutStep(1); 
     } finally {
         setLoading(false);
     }
